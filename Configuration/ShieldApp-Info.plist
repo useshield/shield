@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Merged with Xcode's generated keys. Xcode has no build setting for this
+	     key on macOS, so it lives here. Shown once per browser by macOS. -->
+	<key>NSAppleEventsUsageDescription</key>
+	<string>If you turn it on in Settings, Shield closes browser tabs showing a site that just became blocked. It never closes other tabs.</string>
+</dict>
+</plist>

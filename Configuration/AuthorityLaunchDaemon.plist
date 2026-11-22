@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.kairos.ShieldAuthority</string>
+  <key>ProgramArguments</key><array>
+    <string>/Library/PrivilegedHelperTools/com.kairos.ShieldAuthority</string>
+    <string>serve</string>
+  </array>
+  <key>MachServices</key><dict><key>com.kairos.ShieldAuthority</key><true/></dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <!-- Standard, not Background: macOS throttles Background jobs hard (priority 4)
+       when the Mac is busy, so the app's questions timed out (owner, Nov 15). -->
+  <key>ProcessType</key><string>Standard</string>
+  <key>StandardErrorPath</key><string>/Library/Application Support/ShieldAuthority/service.log</string>
+  <key>StandardOutPath</key><string>/Library/Application Support/ShieldAuthority/service.log</string>
+  <key>Umask</key><integer>63</integer>
+</dict></plist>

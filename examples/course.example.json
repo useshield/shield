@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "courseTitle": "Example Course",
+  "videos": [
+    {
+      "id": "REPLACEME01",
+      "title": "Lesson 1",
+      "expectedDuration": null,
+      "transcriptRequested": true
+    },
+    {
+      "id": "REPLACEME02",
+      "title": "Lesson 2",
+      "expectedDuration": null,
+      "transcriptRequested": true
+    }
+  ]
+}

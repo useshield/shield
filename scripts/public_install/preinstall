@@ -1,0 +1,25 @@
+#!/bin/bash
+# Shield 1.1 public package. Checks this Mac before anything is replaced:
+# the new service validates protected paths, older installs, the current
+# receipt, the user and the release order. Blocks stay on throughout.
+set -euo pipefail
+test "$(id -u)" = 0
+test "${3:-/}" = /
+scripts=$(cd "$(dirname "$0")" && pwd -P)
+root='/Library/Application Support/ShieldAuthority'
+daemon='/Library/LaunchDaemons/com.kairos.ShieldAuthority.plist'
+candidate="$scripts/service.plist"
+bash "$scripts/make_service_plist.sh" "$scripts/service-template.plist" "$candidate"
+"$scripts/ShieldAuthorityPreflight" preflight "$candidate"
+if [ -f "$root/service.plist" ]; then
+  # Policy is never copied or replaced; only the code changes. The service
+  # writer stops while files change and restarts in postinstall.
+  /usr/bin/python3 - "$root" <<'PY'
+import json, subprocess, sys
+state = subprocess.run(['/Library/PrivilegedHelperTools/com.kairos.ShieldAuthority', 'inspect'],
+                       check=True, capture_output=True, text=True).stdout
+open(sys.argv[1] + '/policy-before-update.json', 'w').write(state)
+PY
+  chmod 600 "$root/policy-before-update.json"
+  launchctl bootout system "$daemon" || true
+fi

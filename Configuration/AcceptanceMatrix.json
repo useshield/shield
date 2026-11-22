@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "feature": "Add website \u2192 authenticated commitment \u2192 resolver and browser denial",
+    "script": "test_installed_release_candidate.sh",
+    "arguments": "<pkg> <SHA256SUMS> <new-results-dir>",
+    "scope": "Installed app, root service, WebKit positive controls and denial, restart, unauthorized peer and tamper rejection. Requires a clean disposable Mac."
+  },
+  {
+    "id": 2,
+    "feature": "Recurring schedule activation/deactivation",
+    "script": "observe_installed_schedules.sh",
+    "arguments": "active|inactive <installed-results-dir>",
+    "scope": "Run both phases at real committed wall-clock times. Authenticated root snapshot and actual resolver; DST/fault injection unit tests remain separate."
+  },
+  {
+    "id": 3,
+    "feature": "Commitment delay and legitimate release",
+    "script": "resume_installed_acceptance.sh",
+    "arguments": "release <installed-results-dir>",
+    "scope": "Requires actual reboot and elapsed 24-hour release deadline. Initial phase records pending ownership; fixture tests separately exercise malicious premature requests."
+  },
+  {
+    "id": 4,
+    "feature": "Temporary expiration retains overlapping permanent owner",
+    "script": "resume_installed_acceptance.sh",
+    "arguments": "expiration <installed-results-dir>",
+    "scope": "After actual reboot and 30-minute expiration; validates remaining ownership, real resolver and WebKit blocked/allowed controls."
+  },
+  {
+    "id": 5,
+    "feature": "Service interruption, restart and invalid-state handling",
+    "script": "test_installed_boundary.sh",
+    "arguments": "<installed-results-dir>",
+    "scope": "Disposable tamper and wrong-code rejection, exact-byte restoration. Case 1 additionally runs restart and authenticated UI readback."
+  },
+  {
+    "id": 6,
+    "feature": "Local MP4 import, playback and resume after relaunch",
+    "script": "run_installed_ui_acceptance.sh",
+    "arguments": "<installed-results-dir>",
+    "scope": "Installed RC, controlled real MP4, actual AVPlayer position, transcript, last course, source preservation."
+  },
+  {
+    "id": 7,
+    "feature": "Course errors, damaged-media recovery and persistence",
+    "script": "test_installed_study_recovery.sh",
+    "arguments": "<installed-results-dir>",
+    "scope": "Disposable installed Shield RC, real media import, deliberate corruption of a unique test-owned index, UI rebuild confirmation, byte-for-byte media/transcript preservation, failed native test aborts."
+  },
+  {
+    "id": 8,
+    "feature": "Confined online download and network policy compliance",
+    "script": null,
+    "arguments": "",
+    "scope": "Not accepted. Signed Development XPC and synthetic lifecycle are implemented. The optional real-worker stage of run_final_native_gate.sh requires reviewed tools, explicit content permission and an empty disposable Mac. No actual real download or OS destination authorization has been verified on this candidate. RC fetching remains disabled. See docs/SHIELD_V1_COMPLETION_DELIVERY.md."
+  },
+  {
+    "id": 9,
+    "feature": "Every visible control and truthful feedback",
+    "script": null,
+    "arguments": "",
+    "scope": "Not accepted. Full gate retains 11 Development interactions, six UI Review checks and 32 screenshots. Latest owner-reported fca8af8 Development UI is 9/11; UI Review is 6/6. Corrected genuine-picker automation and current product changes need native verification. Exhaustive keyboard/drop/error acceptance remains incomplete. See docs/SHIELD_V1_COMPLETION_DELIVERY.md."
+  },
+  {
+    "id": 10,
+    "feature": "Installation, upgrade and code-only rollback preserve restrictions",
+    "script": "test_rc_upgrade.sh",
+    "arguments": "<newer-pkg> <SHA256SUMS> <new-results-dir>",
+    "scope": "Requires an already accepted disposable installation and genuinely newer package. Never replays historical policy/key/hosts state. Legacy V0 migration is a separate blocked gate."
+  }
+]

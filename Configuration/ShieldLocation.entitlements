@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+    <!-- Hardened runtime: lets the signed app ask for Location, used only for
+         place rules (docs/conditional-rules-blueprint.md). -->
+    <key>com.apple.security.personal-information.location</key><true/>
+    <!-- Lets the app send Apple Events, used only to list and close browser
+         tabs on newly blocked sites when the user turns that on.
+         macOS still asks the user once per browser. -->
+    <key>com.apple.security.automation.apple-events</key><true/>
+</dict></plist>

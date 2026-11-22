@@ -1,0 +1,44 @@
+name: macOS build and tests
+
+# Manual only: nothing runs (or uses Actions minutes) until someone presses
+# "Run workflow" on GitHub.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    # GitHub-hosted. Unit tests only: no UI click-tests, no root, no hosts file.
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode 27
+        run: |
+          xcode=$(ls -d /Applications/Xcode_27*.app 2>/dev/null | sort -V | tail -1)
+          test -n "$xcode" || { echo "No Xcode 27 on this runner image." >&2; ls -d /Applications/Xcode*.app; exit 1; }
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
+      - name: Build app and tests (ad-hoc signed)
+        run: |
+          xcodebuild build-for-testing -project Kairos.xcodeproj -scheme Kairos -configuration Debug \
+            -destination 'platform=macOS' -derivedDataPath "$RUNNER_TEMP/Derived" \
+            CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual
+      - name: Unit tests
+        run: |
+          xcodebuild test-without-building -project Kairos.xcodeproj -scheme Kairos -configuration Debug \
+            -destination 'platform=macOS' -derivedDataPath "$RUNNER_TEMP/Derived" \
+            -only-testing:ShieldTests -resultBundlePath "$RUNNER_TEMP/ShieldTests.xcresult"
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shield-unit-tests
+          path: ${{ runner.temp }}/ShieldTests.xcresult
+          retention-days: 7

@@ -1,0 +1,39 @@
+#!/bin/bash
+set -euo pipefail
+test "$(id -u)" = 0
+test "${3:-/}" = /
+scripts=$(cd "$(dirname "$0")" && pwd -P)
+service='/Library/PrivilegedHelperTools/com.kairos.ShieldAuthority'
+root='/Library/Application Support/ShieldAuthority'
+daemon='/Library/LaunchDaemons/com.kairos.ShieldAuthority.plist'
+# /etc/hosts keeps its blocks throughout. If anything below fails, the
+# service is started again so blocks keep updating, and the failure is shown.
+restart_on_error() {
+  code=$?
+  if [ "$code" -ne 0 ]; then launchctl bootstrap system "$daemon" 2>/dev/null || true; fi
+  exit "$code"
+}
+trap restart_on_error EXIT
+mkdir -p -m 700 "$root/state"
+chmod 700 "$root" "$root/state"
+[ -f "$scripts/service.plist" ] || bash "$scripts/make_service_plist.sh" "$scripts/service-template.plist" "$scripts/service.plist"
+install -m 600 -o root -g wheel "$scripts/service.plist" "$root/service.plist"
+codesign --verify --strict "$service"
+codesign --verify --deep --strict '/Applications/Shield.app'
+"$service" initialize
+launchctl bootstrap system "$daemon"
+"$service" verify
+if [ -f "$root/policy-before-update.json" ]; then
+  # An update must carry every block, schedule and pending change across exactly.
+  "$service" inspect > "$root/policy-after-update.json"
+  chmod 600 "$root/policy-after-update.json"
+  /usr/bin/python3 - "$root/policy-before-update.json" "$root/policy-after-update.json" <<'PY'
+import json, sys
+before, after = (json.load(open(path)) for path in sys.argv[1:])
+for field in ('restrictions', 'schedules', 'pendingReleases'):
+    if before[field] != after[field]:
+        raise SystemExit('Shield update stopped: ' + field + ' changed. Nothing was removed; see ' + sys.argv[1])
+PY
+fi
+trap - EXIT
+echo 'Shield is installed.'
