@@ -97,7 +97,7 @@ A reporter needs a rule for what counts. Playing a video muted in the background
 
 ## 5. Limits
 
-- An administrator can stop the service or the app. Without reports, location is unknown and place rules turn strict, but stopping the service disables all enforcement. Tamper evidence (`Kairos/ServiceGapEvidence.swift`) records the gap; it can't prevent it.
+- Without reports, location is unknown and place rules turn strict. If the service itself isn't running, gap evidence (`Kairos/ServiceGapEvidence.swift`) records the gap; it can't prevent it.
 - Wi-Fi tags can be replayed by someone with radio equipment. The home veto and dwell rules raise the cost but don't make it impossible.
 - macOS stops location updates while the Mac sleeps. Waking resets dwell, which is fail-closed.
 - Network names can be set to anything, so Wi-Fi alone never proves presence.

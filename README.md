@@ -4,7 +4,11 @@ A native macOS app for blocking distracting websites and apps on your own Mac, w
 
 ## What it does
 
-- **Blocks** websites you choose, through a root service that rewrites a managed section of `/etc/hosts`.
+- **Blocks websites and apps** you choose, through a background service:
+  - In **Chrome, Brave, Edge, Vivaldi and Firefox**, Shield hands the browser its block list as a browser policy. A blocked site and its subdomains stay blocked in every profile, Incognito and Guest window, whatever DNS, VPN or proxy is set.
+  - In **Safari and other apps**, websites are blocked through a managed section of `/etc/hosts`. Shield adds the `www.` version of each site for you.
+  - A blocked **app** closes within about two seconds of opening.
+- **Kinds of block:**
   - **Permanent** blocks stay until you remove them, and removing one waits 72 hours (you can make that longer, up to 30 days, in Settings).
   - Any new block can be **undone for 10 minutes**, in case you made a mistake.
   - **Until released** blocks end only when you ask, 24 hours later.
@@ -13,24 +17,23 @@ A native macOS app for blocking distracting websites and apps on your own Mac, w
 - **One rule for every change:** anything stricter applies at once; anything looser waits at least 24 hours. A pending looser change can be cancelled at once ("Keep Current Rules").
 - **Categories** organize blocks and schedules. They never change what's blocked.
 - **Places:** optional rules for where you are (for example "Go There Today"). Location is used only while such a rule needs it and never leaves your Mac.
-- **Video Library (optional add-on, off by default):** save videos for offline study and watch them with resume, speed and transcripts. Download only media you're allowed to download; respect each site's terms and the creators' rights.
+- **Video Library (add-on, not in the 1.1 download):** save videos for offline study and watch them with resume, speed and transcripts. The source is here; it isn't part of the release yet. Download only media you're allowed to download; respect each site's terms and the creators' rights.
 - **Everything Shield changes on your Mac** is listed in Settings → "What Shield changes on this Mac".
 
-## What it does *not* protect against
+## What's not covered yet
 
-Shield is a commitment device, not tamper-proof security. Be honest with yourself about these limits:
+Shield is a commitment tool: it makes giving in slow and deliberate. These gaps are known and planned for the next updates:
 
-- An **administrator on the Mac** (including you, with `sudo`) can stop the service or edit `/etc/hosts`. Shield records service interruptions but can't prevent them.
-- **Hosts-file blocking** is exact-hostname only. Alternate DNS, DNS-over-HTTPS, browser resolver flags, direct IP addresses, VPNs and unlisted subdomains can bypass it.
-- It blocks **websites in browsers**, not apps on other devices.
+- **Safari and other apps** only get the `/etc/hosts` block, so a custom DNS setting, a VPN or a subdomain that isn't listed can still reach a blocked site there.
+- **Other browsers** such as Arc and Opera don't read Shield's browser policy yet. Shield only checks how they were started.
+- **Other devices** aren't covered. Shield works on the Mac it's installed on.
 
-See [SECURITY.md](SECURITY.md) and [docs/download-egress-threat-model.md](docs/download-egress-threat-model.md).
+See [SECURITY.md](SECURITY.md) for how Shield's rules are protected and how to report a problem.
 
 ## Requirements
 
-- macOS 26 on Apple silicon
-- Xcode 27 (macOS 27 SDK)
-- To build an installer: any code-signing identity, including a self-signed one. The service only accepts the exact app build it was installed with.
+- To run Shield: macOS 26 on Apple silicon.
+- To build it: Xcode 27 (macOS 27 SDK). To build an installer: any code-signing identity, including a self-signed one. The service only accepts the exact app build it was installed with.
 
 ## Build and run
 
@@ -79,7 +82,9 @@ The installer adds the app to `/Applications`, a background service (`/Library/P
 |---|---|
 | `Kairos/` | The SwiftUI app: views, view model, policy model, backend engine shared with the service |
 | `AuthorityService/` | The root service (install, inspect, serve over authenticated XPC) |
-| `StudyWorker/`, `EgressBroker/` | Sandboxed download worker and its allowlisting network broker |
+| `StudyWorker/`, `EgressBroker/` | Video Library add-on: sandboxed download worker and its allowlisting network broker |
+| `ShieldLocationHelper/` | Fallback location sensor for Places |
+| `ShieldNetworkFilter/` | Planned network filter for Safari and other apps (not built yet) |
 | `ShieldTests/`, `ShieldUITests/` | Unit tests and UI flow tests |
 | `scripts/` | Packaging, signing checks and test helpers |
 | `docs/` | Architecture and threat-model notes |

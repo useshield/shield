@@ -22,9 +22,8 @@
 
 ## Limits
 
-- An administrator can stop either mechanism.
 - If an Endpoint Security client stops, macOS allows every launch.
-- Unlike `/etc/hosts`, which keeps blocking after the service stops, app blocking needs a running process. Tamper evidence (`Kairos/ServiceGapEvidence.swift`) records when the service was not running while the Mac was awake. It can't prevent the stop.
+- Unlike `/etc/hosts`, which keeps blocking after the service stops, app blocking needs a running process. Gap evidence (`Kairos/ServiceGapEvidence.swift`) records when the service was not running while the Mac was awake. It can't prevent the stop.
 - Scripts, command-line tools and web apps inside a browser are not covered by app rules.
 
 ## Matching an app
