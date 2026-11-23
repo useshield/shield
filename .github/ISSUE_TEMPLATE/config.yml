@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem privately
+    url: https://github.com/useshield/shield/security/advisories/new
+    about: Anything that lets a block end early or lets a looser change skip its wait.
+  - name: Shield website
+    url: https://useshield.app
+    about: What Shield does, the FAQ and the download.

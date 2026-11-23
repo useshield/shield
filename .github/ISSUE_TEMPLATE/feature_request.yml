@@ -1,0 +1,19 @@
+name: Idea or feature request
+description: Something Shield could do better.
+labels: [idea]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      placeholder: "I want my study sites to stay open while social media is blocked."
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+  - type: markdown
+    attributes:
+      value: |
+        Shield keeps one rule: anything stricter applies at once, anything looser waits at least 24 hours. Ideas that make it easier to undo a block early won't be added, but ideas that make the wait clearer or kinder are welcome.

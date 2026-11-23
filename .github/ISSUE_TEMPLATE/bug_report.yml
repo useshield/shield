@@ -1,0 +1,54 @@
+name: Bug report
+description: Something in Shield doesn't work the way it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. If the problem lets a block end early or lets a looser change skip its wait, please [report it privately](https://github.com/useshield/shield/security/advisories/new) instead.
+        Don't paste your block list, schedules or anything personal; describe the kind of site or rule instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: "I pressed Reopen Chrome and Chrome didn't come back."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to make it happen again
+      placeholder: |
+        1. Make a timed block for a website
+        2. ...
+  - type: input
+    id: version
+    attributes:
+      label: Shield version
+      description: Settings → Updates shows it (for example "Shield 1.1").
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "macOS 26.6"
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser, if it's about websites
+      options: [Not about websites, Safari, Chrome, Brave, Edge, Vivaldi, Firefox, Arc, Opera, Other]
+  - type: textarea
+    id: report
+    attributes:
+      label: Diagnostic report (optional)
+      description: Settings → Help → Diagnostic report → Copy. It leaves out site names, paths and video titles.
+      render: text
